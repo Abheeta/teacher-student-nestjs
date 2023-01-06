@@ -8,7 +8,7 @@ export type StudentDocument = mongoose.HydratedDocument<Student>;
 export class Student {
   
    @Prop({required:true, index:true, unique:true})
-   studentId: number;
+   studentId: number; 
    @Prop()
    name: string;
    @Prop()

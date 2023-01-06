@@ -3,7 +3,6 @@ import { StudentService } from './service/student.service';
 import { StudentController } from './controller/student.controller';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Student, StudentSchema } from './schema/student.schema';
-import { InjectModel } from '@nestjs/mongoose';
 import { Teacher } from '../teacher/schema/teacher.schema';
 import { TeacherModule } from '../teacher/teacher.module';
 import { Course } from '../course/schema/course.schema';
@@ -51,9 +50,25 @@ import { CourseModule } from '../course/course.module';
             })
           )
         })
+
+        schema.pre("deleteOne", {document: true, query: false }, async function(){
+          await courseModel.updateMany(
+            {
+              "students": this._id 
+            },
+            { 
+              $pull: {"students": this._id} 
+            }
+          
+          )
+
+        })
+
         return schema;
       }  
     }]),
+
+
   // TeacherModule
   ],
   

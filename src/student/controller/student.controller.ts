@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from "@nestjs/common";
+import { Query } from "@nestjs/common/decorators";
 import { CreateStudentDto } from "../dto/create-student.dto";
 import { Student } from '../schema/student.schema';
 import { StudentService } from '../service/student.service';
@@ -14,6 +15,16 @@ export class StudentController {
             newStudent
         })
     }
+
+    @Delete('/:id')
+    async delete(@Res() response, @Param('id') studentId:number){
+        await this.studentService.deleteStudent(studentId);
+        return response.status(HttpStatus.OK).json({
+            studentId: studentId,
+            message: "The requested student has been deleted"
+        })
+    }
+
 
     // @Get()
     // async getAll(@Res() response){
