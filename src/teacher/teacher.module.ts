@@ -49,6 +49,18 @@ import { CourseModule } from '../course/course.module';
             })
           )
         })
+
+        schema.pre('deleteOne',{document: true, query: false }, async function(){
+          console.log(this)
+          await courseModel.updateMany(
+            {
+              "teachers": this._id
+            },
+            {
+              $pull: {"teachers": this._id}
+            }
+          )
+        })
         return schema;
       }  
     }]),
