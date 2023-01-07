@@ -22,6 +22,17 @@ export class TeacherController {
     return response.status(HttpStatus.OK).json({
         teacherId: teacherId,
         message: "The requested teacher has been deleted"
-    })
-}
+        })
+    }
+
+    @Get('/:id')
+    async get(@Res() response, @Param('id') teacherId: number){
+        const teacher = await this.teacherService.getTeacher(teacherId);
+        return response.status(HttpStatus.OK).json(
+            {teacher}
+        )
+    }
+
+
+
 }

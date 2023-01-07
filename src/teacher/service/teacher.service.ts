@@ -30,6 +30,14 @@ export class TeacherService {
         return deletedTeacher;
     }
 
+    async getTeacher(teacherId: number){
+        const reqTeacher = await this.teacherModel.findOne(
+            {"teacherId": teacherId}
+        )
+
+        return reqTeacher;
+    }
+
     //  async updateStudent(studentId: string, updateStudentDto: UpdateStudentDto): Promise<IStudent> {
     //     const existingStudent = await this.studentModel.findByIdAndUpdate(studentId, updateStudentDto, { new: true });
     //    if (!existingStudent) {

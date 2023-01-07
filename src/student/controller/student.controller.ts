@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from "@nestjs/common";
 import { Query } from "@nestjs/common/decorators";
+import { response } from "express";
 import { CreateStudentDto } from "../dto/create-student.dto";
 import { Student } from '../schema/student.schema';
 import { StudentService } from '../service/student.service';
@@ -25,6 +26,13 @@ export class StudentController {
         })
     }
 
+    @Get('/:id')
+    async get(@Res() response, @Param('id') studentId: number){
+        const student = await this.studentService.getStudent(studentId);
+        return response.status(HttpStatus.OK).json(
+            {student}
+        )
+    }
 
     // @Get()
     // async getAll(@Res() response){

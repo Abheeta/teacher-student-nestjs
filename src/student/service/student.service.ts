@@ -33,9 +33,18 @@ export class StudentService {
 
        return deletedStudent
 
-       
+    }
+
+    async getStudent(studentId: number){
+
+        const reqStudent = await this.studentModel.findOne(
+            {"studentId": studentId}
+        )
+
+        return reqStudent;
 
     }
+
 
     //  async updateStudent(studentId: string, updateStudentDto: UpdateStudentDto): Promise<IStudent> {
     //     const existingStudent = await this.studentModel.findByIdAndUpdate(studentId, updateStudentDto, { new: true });
