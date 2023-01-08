@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateStudentDto } from 'src/student/dto/create-student.dto';
 import { Model } from "mongoose";
 import { Student, StudentDocument } from '../schema/student.schema';
+import { UpdateStudentDto } from '../dto/update-student.dto';
 
 @Injectable()
 export class StudentService {
@@ -43,6 +44,10 @@ export class StudentService {
 
         return reqStudent;
 
+    }
+
+    async updateStudent(id: number, updates: UpdateStudentDto){
+        
     }
 
 
