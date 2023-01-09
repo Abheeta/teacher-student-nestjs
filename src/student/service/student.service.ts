@@ -47,7 +47,66 @@ export class StudentService {
     }
 
     async updateStudent(id: number, updates: UpdateStudentDto){
+
+    }
+
+
+    async updateStudent(studentId: number, updates: UpdateStudentDto) {
+        // console.log(updates, studentId);
+        const updateQuery = {
+            set: {},
+            push: {},
+            pull: {}
+        };
+        updates.updateOps.forEach(element => {
+            // console.log(element);
+            if(element.op === "replace") {
+                updateQuery.set[element.path] = element.value;
+            }
+            else {
+                updateQuery[element.op === "add" ? "push" : "pull"][element.path] = element.value
+            }
+        });
+
+        // console.log(updateQuery)
+
+        let updatedStudent = await this.studentModel.findOne({
+            "studentId": studentId
+        }).exec();
+
+        if (!updatedStudent) {
+            throw new NotFoundException(`Student #${studentId} not found`);
+        }
+
+        updatedStudent = await this.studentModel.findOneAndUpdate({
+            "_id": updatedStudent._id,
+            "class": updatedStudent.class,
+            "courses": updatedStudent.courses
+        }, {
+            $pullAll: { "courses": updateQuery.pull["courses"] }
+        }, { new: true });
+
+        console.log("2: " + updatedStudent);
+
+      
+
+        updatedStudent = await this.studentModel.findOneAndUpdate({
+            "_id": updatedStudent._id,
+            "class": updatedStudent.class,
+            "courses": updatedStudent.courses
+        }, {
+            $set: updateQuery.set,
+            $push: { "courses": { $each: updateQuery.push["courses"]} },
+            // $pull: { "courses": { $each: updateQuery.pull["courses"]} }
+            // $pushAll: { "courses": updateQuery.push["courses"] },
+            // $pullAll: { "courses": updateQuery.pull["courses"] }
+        }, { new: true });
+
+        console.log("3: " + updatedStudent);
         
+        
+        
+        return updatedStudent;
     }
 
 
