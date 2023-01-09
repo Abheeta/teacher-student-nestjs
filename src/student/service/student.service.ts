@@ -46,10 +46,6 @@ export class StudentService {
 
     }
 
-    async updateStudent(id: number, updates: UpdateStudentDto){
-
-    }
-
 
     async updateStudent(studentId: number, updates: UpdateStudentDto) {
         // console.log(updates, studentId);
